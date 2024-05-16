@@ -13,11 +13,12 @@ class NewsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  ScreenUtilInit(
+    return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
       child: MaterialApp(
+
         debugShowCheckedModeBanner: false,
         onGenerateRoute: appRouter.generateRoute,
         theme: ThemeData(
