@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
           height: double.infinity,
         ),
       ),
-      Scaffold(
+      const Scaffold(
         backgroundColor: Colors.transparent,
         body: HomeBody(),
       ),

@@ -1,5 +1,5 @@
-import 'dart:ffi';
-import 'dart:ui';
+// import 'dart:ffi';
+// import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +8,7 @@ import 'package:news_app/feature/home/data/models/category_model.dart';
 
 // ignore: must_be_immutable
 class HomeCategoryItem extends StatelessWidget {
-  CategoryModel categoryModel;
+  final CategoryModel categoryModel;
   void Function(CategoryModel) onCategoryClick;
   int categoryIndex;
   HomeCategoryItem({

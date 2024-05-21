@@ -10,24 +10,34 @@ class TextStyles {
     fontWeight: FontWeightHelper.regular,
     color: Colors.white,
   );
-   static TextStyle font14WhiteRegular = TextStyle(
+  static TextStyle font14WhiteRegular = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeightHelper.regular,
     color: Colors.white,
   );
-   static TextStyle font14GreenRegular = TextStyle(
+  static TextStyle font14GreenRegular = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeightHelper.regular,
     color: ColorsManager.mainGreen,
   );
-    static TextStyle font22WhiteBold = TextStyle(
+  static TextStyle font22WhiteBold = TextStyle(
     fontSize: 22.sp,
     fontWeight: FontWeightHelper.bold,
     color: Colors.white,
   );
-    static TextStyle font24BlackBold = TextStyle(
-    fontSize: 22.sp,
+  static TextStyle font24BlackBold = TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeightHelper.bold,
     color: Colors.black,
+  );
+  static TextStyle font16BlackMedium = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: Colors.black,
+  );
+  static TextStyle font14BlackMedium = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeightHelper.medium,
+    color: Colors.black.withOpacity(.4),
   );
 }

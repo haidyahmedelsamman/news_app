@@ -7,19 +7,19 @@ import 'package:news_app/core/theme/styles.dart';
 import 'package:news_app/feature/home/data/models/sources_title_response.dart';
 
 class SourceTabItem extends StatelessWidget {
-  bool isSelected;
-  SourcesTitle source;
-  SourceTabItem({
-    Key? key,
+  final bool isSelected;
+  final SourcesTitle source;
+   const SourceTabItem({
+    super.key,
     required this.isSelected,
     required this.source,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      
-      padding: EdgeInsets.symmetric(vertical: 10.sp, horizontal: 20.sp),
+      margin: EdgeInsets.only(top: 8.sp),
+      padding: EdgeInsets.symmetric(vertical: 5.sp, horizontal: 10.sp),
       decoration: isSelected
           ? BoxDecoration(
               color: ColorsManager.mainGreen,
@@ -34,7 +34,7 @@ class SourceTabItem extends StatelessWidget {
       child: Center(
         child: Text(
           textAlign: TextAlign.center,
-         source.name.toString(),
+          source.name.toString(),
           style: isSelected
               ? TextStyles.font14WhiteRegular
               : TextStyles.font14GreenRegular,

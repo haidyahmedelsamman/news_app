@@ -7,8 +7,8 @@ import '../../../core/theme/colors.dart';
 import '../../../core/theme/styles.dart';
 
 class HomeDrawer extends StatelessWidget {
-  Function onCategoryClick;
-   HomeDrawer({
+  final Function onCategoryClick;
+  const HomeDrawer({
     super.key,
     required this.onCategoryClick,
   });

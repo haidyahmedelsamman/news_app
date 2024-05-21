@@ -1,25 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:news_app/core/theme/colors.dart';
 import 'package:news_app/feature/home/data/models/category_model.dart';
 import 'package:news_app/feature/home/logic/cubit/home_cubit.dart';
 import 'package:news_app/feature/home/logic/cubit/home_state.dart';
 import 'package:news_app/feature/home/ui/artical_item.dart';
 import 'package:news_app/feature/home/ui/source_tab_item.dart';
 
-class NewsScreen extends StatefulWidget {
-  CategoryModel categoryModel;
-  NewsScreen({
-    Key? key,
+class NewsScreen extends StatelessWidget {
+  final CategoryModel categoryModel;
+  const NewsScreen({
+    super.key,
     required this.categoryModel,
-  }) : super(key: key);
-
-  @override
-  State<NewsScreen> createState() => _NewsScreenState();
-}
-
-class _NewsScreenState extends State<NewsScreen> {
-  int selectedIndex = 0;
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +22,8 @@ class _NewsScreenState extends State<NewsScreen> {
       listener: (context, state) {},
       builder: (context, state) {
         if (state is HomeLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+              child: CircularProgressIndicator(color: ColorsManager.mainGreen));
         }
         if (state is HomeError) {
           return Center(
@@ -40,32 +36,35 @@ class _NewsScreenState extends State<NewsScreen> {
             SizedBox(
               height: 5.h,
             ),
-            // SourcesTabsList(
-            //   sources: context.read<HomeCubit>().sourcesTitle,
-            //   category: categoryModel.category,
-            // ),
             DefaultTabController(
               length: context.read<HomeCubit>().sourcesTitle.length,
               child: Column(
                 children: [
                   TabBar(
+                    tabAlignment: TabAlignment.start,
+                    labelPadding: EdgeInsets.symmetric(horizontal: 8.sp),
+                    dividerColor: Colors.transparent,
                     indicatorColor: Colors.transparent,
                     onTap: (index) {
-                      setState(() {
-                         selectedIndex = index;
-                        context.read<HomeCubit>().emitSelectedSource(selectedIndex);
-
-                        context.read<HomeCubit>().emitGetArticals(
-                           widget.categoryModel.category, context.read<HomeCubit>().sourceName);
-                    
-                      });
-                       
+                      context.read<HomeCubit>().searchedList = [];
+                      context.read<HomeCubit>().controller.text = "";
+                      context.read<HomeCubit>().selectedIndex = index;
+                      context.read<HomeCubit>().emitSelectedSource(
+                          context.read<HomeCubit>().selectedIndex);
+                      context.read<HomeCubit>().emitGetArticals(
+                          categoryModel.category,
+                          context.read<HomeCubit>().sourceName);
                     },
                     isScrollable: true,
-                    tabs: context.read<HomeCubit>().sourcesTitle
+                    tabs: context
+                        .read<HomeCubit>()
+                        .sourcesTitle
                         .map((item) => SourceTabItem(
-                              isSelected:
-                                 context.read<HomeCubit>().sourcesTitle.indexOf(item) == selectedIndex,
+                              isSelected: context
+                                      .read<HomeCubit>()
+                                      .sourcesTitle
+                                      .indexOf(item) ==
+                                  context.read<HomeCubit>().selectedIndex,
                               source: item,
                             ))
                         .toList(),
@@ -76,18 +75,58 @@ class _NewsScreenState extends State<NewsScreen> {
             SizedBox(
               height: 10.h,
             ),
-            Expanded(
-              child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return ArticalItem(
-                        articalModel: context.read<HomeCubit>()
-                                .articalsData[index]);
-                  },
-                  itemCount: context.read<HomeCubit>().articalsData.length),
+            BlocConsumer<HomeCubit, HomeState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is HomeArticalsLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: ColorsManager.mainGreen,
+                    ),
+                  );
+                }
+                if (state is HomeArticalsSearchedLoading) {
+                  return const Center(
+                      child: CircularProgressIndicator(
+                          color: ColorsManager.mainGreen));
+                }
+
+                if (state is HomeArticalsSearchedError) {
+                  return Center(
+                    child: Text(state.error),
+                  );
+                } else {
+                  return Expanded(
+                    child: ListView.builder(
+                        itemBuilder: (context, index) {
+                          return context
+                                  .read<HomeCubit>()
+                                  .controller
+                                  .text
+                                  .isEmpty
+                              ? ArticalItem(
+                                  articalModel: context
+                                      .read<HomeCubit>()
+                                      .articalsData[index])
+                              : ArticalItem(
+                                  articalModel: context
+                                      .read<HomeCubit>()
+                                      .searchedList[index]);
+                        },
+                        itemCount: context
+                                .read<HomeCubit>()
+                                .controller
+                                .text
+                                .isEmpty
+                            ? context.read<HomeCubit>().articalsData.length
+                            : context.read<HomeCubit>().searchedList.length),
+                  );
+                }
+              },
             ),
           ],
         );
-},
+      },
     );
   }
 }
